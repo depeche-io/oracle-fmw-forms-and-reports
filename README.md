@@ -81,5 +81,20 @@ There is a docker-compose that allows you to build the image with all required d
       # start again and this time it should be working ok
       docker-compose start formsreports
 
-      # currently, t
-      # check
+      # weblogic is fully started with this message in the logs: <Server state changed to RUNNING.>
+
+      # currently, there are 3 services, only 1 starts automatically (weblogic admin console and enterprise manager):
+      http://localhost:7001/em  
+      # or
+      http://localhost:7001/console
+      # use can use these (default: weblogic/welcome1) to start MS_FORMS and MS_REPORTS
+      # or you can use standard start scripts
+
+
+### Reseting the domain
+
+- To reset the already initialized domain, from forms container or outside:
+
+
+      rm -r /u01/oracle/user_projects/domains/$DOMAIN_NAME/  
+      
