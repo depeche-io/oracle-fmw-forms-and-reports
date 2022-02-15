@@ -1,28 +1,18 @@
 version: '3.7'
 
 services:
-  #oradb:
-  #  #image: container-registry.oracle.com/database/standard:12.1.0.2
-  #  image: container-registry.oracle.com/database/enterprise:19.3.0.0
-  #  volumes:
-  #    - /data/obis/oracle-se2/:/opt/oracle/oradata
-  #    - /data/obis/import/:/mnt/import/
-  #  env_file: ./db.env
-  #  shm_size: '4g'
-  #  ports:
-  #    - 1521:1521
-  #    - 5500:5500
-
-  nginx:
-    image: nginx:latest
-    # needed on linux hosts
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-
+  oradb:
+    image: container-registry.oracle.com/database/enterprise:19.3.0.0
     volumes:
-      - ./installation-files/:/usr/share/nginx/html
+      - ./oradata/:/opt/oracle/oradata
+    environment:
+      - ORACLE_SID=ORCL
+      - ORACLE_EDITIONa=Tester123_
+      - ORACLE_EDITION=standard
+    shm_size: '4g'
     ports:
-      - 8009:80
+      - 1521:1521
+      - 5500:5500
 
   formsreports:
     build:
@@ -31,6 +21,9 @@ services:
     entrypoint: sleep 9999999 # use this for own experiments, otherwise comment this
     volumes:
       - ./container-scripts/:/opt/container-scripts/
-      #- ./user_projects/:/u01/oracle/user_projects
+      #- ./user_projects/:/u01/oracle/user_projects # uncomment to persist generated domain config
     ports:
-      - 7001:7001
+      - 7001:7001 # Weblogic (https for /console and /em)
+      - 9011:9011 # FORMS
+      - 9012:9012 # REPORTS
+
