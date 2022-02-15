@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  nginx:
+    image: nginx:latest
+    # needed on linux hosts
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    volumes:
+      - ./installation-files/:/usr/share/nginx/html
+    ports:
+      - 8009:80
