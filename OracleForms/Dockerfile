@@ -8,7 +8,7 @@ ENV JAVA_PKG=jdk-8u321-linux-x64.tar.gz \
 
 USER root
 # libnsl = OHS dependency
-RUN yum install -y vim mc tar hostname wget libnsl binutils gcc gcc-c++ glibc.x86_64 glibc.i686 glibc-devel.x86_64 libaio.x86_64 libaio-devel.x86_64 libgcc.x86_64 libgcc.i686 libstdc++.x86_64 libstdc++.i686 libstdc++-devel.x86_64 ksh make sysstat numactl numactl-devel motif motif-devel
+RUN yum install -y vim mc tar bzip2 hostname wget libnsl binutils gcc gcc-c++ glibc.x86_64 glibc.i686 glibc-devel.x86_64 libaio.x86_64 libaio-devel.x86_64 libgcc.x86_64 libgcc.i686 libstdc++.x86_64 libstdc++.i686 libstdc++-devel.x86_64 ksh make sysstat numactl numactl-devel motif motif-devel
 
 ADD $REMOTE_REPO/$JAVA_PKG /usr/java/
 
