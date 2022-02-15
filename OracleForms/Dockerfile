@@ -1,6 +1,7 @@
 ###### SERVER JDK
 FROM oraclelinux:8 as serverjdk
-ARG REMOTE_REPO=http://docker.host.internal:8008
+# HOST OS NGINX local repo trick
+ARG REMOTE_REPO=http://172.17.0.1:8008 
 
 ENV JAVA_PKG=jdk-8u321-linux-x64.tar.gz \
     JAVA_HOME=/usr/java/default

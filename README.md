@@ -20,11 +20,11 @@ There is a docker-compose that allows you to build the image with all required d
 
 - Following files needs to be downloaded from Edelivery and unzipped to folder installation-files/ . There is also a WGET scripts prepared (you just input your username and password on second line), but we are not sure, how long this will work.
 
-|Resource                           | Filename in installation-files/   | Edelivery search name     |  WGET script | Notes |
-|---                                |---                                |---                        |---|---|
-|Oracle JDK                         | jdk-8u321-linux-x64.tar.gz        | Oracle JDK 1.8.0_321      | installation-files/wget-jdk-8u321.sh  | |
-|Fusion Middleware - Infrastructure | fmw_12.2.1.4.0_infrastructure.jar | Oracle Fusion Middleware 12c Infrastructure 12.2.1.4.0 | installation-files/wget-fmw-infra-12.2.1.4.sh  | |
-|Forms and Reports                  | fmw_12.2.1.4.0_fr_linux64.bin, fmw_12.2.1.4.0_fr_linux64-2.zip  |  Oracle Forms and Reports 12.2.1.4.0 ( Oracle Forms and Reports )		 |  installation-files/wget-fr-12.2.1.4.sh | Just rename the second file, do not unzip it  |
+|Resource                           | Filename in installation-files/   | Edelivery search name     |  WGET script |
+|---                                |---                                |---                        |---|
+|Oracle JDK                         | jdk-8u321-linux-x64.tar.gz        | Oracle JDK 1.8.0_321      | installation-files/wget-jdk-8u321.sh  |
+|Fusion Middleware - Infrastructure | fmw_12.2.1.4.0_infrastructure.jar | Oracle Fusion Middleware 12c Infrastructure 12.2.1.4.0 | installation-files/wget-fmw-infra-12.2.1.4.sh  |
+|Forms and Reports                  | fmw_12.2.1.4.0_fr_linux64.bin, fmw_12.2.1.4.0_fr_linux64-2.zip  |  Oracle Forms and Reports 12.2.1.4.0 ( Oracle Forms and Reports )		 |  installation-files/wget-fr-12.2.1.4.sh |
 
 For the easiest possible build, there are also prepared WGET download scripts in ./installation-files.
 
