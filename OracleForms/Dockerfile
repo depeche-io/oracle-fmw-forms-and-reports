@@ -91,4 +91,4 @@ EXPOSE 9001
 # REPORTS
 EXPOSE 9002
 
-ENTRYPOINT ["source /opt/container-scripts/setenv.sh && /opt/container-scripts/crDomain.sh"]
+ENTRYPOINT ["/bin/bash -c 'source /opt/container-scripts/setenv.sh && /opt/container-scripts/crDomain.sh'"]

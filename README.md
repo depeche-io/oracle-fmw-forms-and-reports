@@ -66,9 +66,20 @@ There is a docker-compose that allows you to build the image with all required d
       # wait like 15 mins to fully initialize, check status via
       docker-compose logs -f
       # wait for this message in the db log: DATABASE IS READY TO USE!
+      
+      # set default password for user:
+      docker exec -it oracle-fmw-forms-and-reports_oradb_1 bash
+      ./setPassword.sh XXXX
+      # you use the same password in ./OracleForms/container-scripts/setenv.sh later on
 
       # if the DB is online, start the Forms and Reports
       # note - image is constructed to do the necessary setup on the first run and exist afterwars
       # wait intervals are defined as fixed, BUT sometimes there are not enough, depending on the load of the server
-      # first run takes 7-10 mins
       docker-compose start formsreports
+      # first run takes 7-10 mins, after this, it should
+
+      # start again and this time it should be working ok
+      docker-compose start formsreports
+
+      # currently, t
+      # check
