@@ -12,7 +12,7 @@ RUN yum install -y vim mc tar bzip2 hostname wget libnsl binutils gcc gcc-c++ gl
 
 ADD $REMOTE_REPO/$JAVA_PKG /usr/java/
 
-RUN tar -xfz /usr/java/$JAVA_PKG && rm /usr/java/$JAVA_PKG
+RUN tar -xf /usr/java/$JAVA_PKG && rm /usr/java/$JAVA_PKG
 
 RUN export JAVA_DIR=$(ls -1 -d /usr/java/*) && \
     ln -s $JAVA_DIR /usr/java/latest && \
