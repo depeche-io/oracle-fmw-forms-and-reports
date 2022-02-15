@@ -46,8 +46,22 @@ There is a docker-compose that allows you to build the image with all required d
     docker-compose build
 
 - You can tag the result image and use it
-- There is also a docker-compose with the Oracle DB configured for testing (DB is required for RCU (Repository Creation Utility) and the RCU will drop and than create the repository on the first run).
+
+## Run the generated image
+
+- There is also a docker-compose with the Oracle DB configured for testing (DB is required for RCU (Repository Creation Utility) and the RCU will drop and than create the repository on the first run). To download the Oracle DB image, you first need to sign in to [Oracle Container Registry](https://container-registry.oracle.com/ords/f?p=113:4:107491460743651:::4:P4_REPOSITORY,AI_REPOSITORY,AI_REPOSITORY_NAME,P4_REPOSITORY_NAME,P4_EULA_ID,P4_BUSINESS_AREA_ID:9,9,Oracle%20Database%20Enterprise%20Edition,Oracle%20Database%20Enterprise%20Edition,1,0&cs=3sFQ_XbKSEnH85nKYJKhHGfnE4VsqoQKiHXEIh6SrTf7_8F5tTiR-ceAG3Pzrrt6HwYJGD0TSbtqasa-xVJYH0g) and confirm the license. Docker login using your credentials later on:
 
 
+      docker login container-registry.oracle.com
+      # Otherwise you will get these errors: ERROR: Head https://container-registry.oracle.com/v2/database/enterprise/manifests/19.3.0.0: unauthorized: authentication required
 
+      # start the database seprately
+      docker-compose start oradb
+      # wait like 15 mins to fully initialize, check status via
+      docker-compose logs -f
 
+      # if the DB is online, start the Forms and Reports
+      # note - image is constructed to do the necessary setup on the first run and exist afterwars
+      # wait intervals are defined as fixed, BUT sometimes there are not enough, depending on the load of the server
+      # first run takes 7-10 mins
+      docker-compose start formsreports
