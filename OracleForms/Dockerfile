@@ -6,6 +6,10 @@ ARG REMOTE_REPO=http://172.17.0.1:8008
 ENV JAVA_PKG=jdk-8u321-linux-x64.tar.gz \
     JAVA_HOME=/usr/java/default
 
+USER root
+# libnsl = OHS dependency
+RUN yum install -y vim mc tar hostname wget libnsl binutils gcc gcc-c++ glibc.x86_64 glibc.i686 glibc-devel.x86_64 libaio.x86_64 libaio-devel.x86_64 libgcc.x86_64 libgcc.i686 libstdc++.x86_64 libstdc++.i686 libstdc++-devel.x86_64 ksh make sysstat numactl numactl-devel motif motif-devel
+
 ADD $REMOTE_REPO/$JAVA_PKG /usr/java/
 
 RUN tar -xfz /usr/java/$JAVA_PKG && rm /usr/java/$JAVA_PKG
@@ -20,10 +24,6 @@ RUN export JAVA_DIR=$(ls -1 -d /usr/java/*) && \
 ###### FMW INFRA
 FROM serverjdk AS fmw-infra
 ARG REMOTE_REPO=http://docker.host.internal:8008
-
-USER root
-# libnsl = OHS dependency
-RUN yum install -y vim mc hostname wget libnsl binutils gcc gcc-c++ glibc.x86_64 glibc.i686 glibc-devel.x86_64 libaio.x86_64 libaio-devel.x86_64 libgcc.x86_64 libgcc.i686 libstdc++.x86_64 libstdc++.i686 libstdc++-devel.x86_64 ksh make sysstat numactl numactl-devel motif motif-devel
 
 # Common environment variables required for this build
 # ----------------------------------------------------

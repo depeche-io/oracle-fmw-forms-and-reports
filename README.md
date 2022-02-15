@@ -34,7 +34,7 @@ For the easiest possible build, there are also prepared WGET download scripts in
     docker-compose -f docker-compose.build.yml up -d
 
 
--
+- Build the Forms and Reports image
 
 
     docker-compose build
