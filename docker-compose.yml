@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  #oradb:
+  #  #image: container-registry.oracle.com/database/standard:12.1.0.2
+  #  image: container-registry.oracle.com/database/enterprise:19.3.0.0
+  #  volumes:
+  #    - /data/obis/oracle-se2/:/opt/oracle/oradata
+  #    - /data/obis/import/:/mnt/import/
+  #  env_file: ./db.env
+  #  shm_size: '4g'
+  #  ports:
+  #    - 1521:1521
+  #    - 5500:5500
+
+  nginx:
+    image: nginx:latest
+    # needed on linux hosts
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    volumes:
+      - ./installation-files/:/usr/share/nginx/html
+    ports:
+      - 8009:80
+
+  formsreports:
+    build:
+      context: OracleForms
+      target: formsreports
+    entrypoint: sleep 9999999 # use this for own experiments, otherwise comment this
+    volumes:
+      - ./container-scripts/:/opt/container-scripts/
+      #- ./user_projects/:/u01/oracle/user_projects
+    ports:
+      - 7001:7001
