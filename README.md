@@ -26,9 +26,15 @@ There is a docker-compose that allows you to build the image with all required d
 |Fusion Middleware - Infrastructure | fmw_12.2.1.4.0_infrastructure.jar | Oracle Fusion Middleware 12c Infrastructure 12.2.1.4.0 | installation-files/wget-fmw-infra-12.2.1.4.sh  |
 |Forms and Reports                  | fmw_12.2.1.4.0_fr_linux64.bin, fmw_12.2.1.4.0_fr_linux64-2.zip  |  Oracle Forms and Reports 12.2.1.4.0 ( Oracle Forms and Reports )		 |  installation-files/wget-fr-12.2.1.4.sh |
 
-For the easiest possible build, there are also prepared WGET download scripts in ./installation-files.
+ - For the easiest possible build, there are also prepared WGET download scripts in ./installation-files.
 
-- Run nginx for serving these resources (this step save you A LOT of time when you rebuild over and over the main Dockerfile - large files are not transferred again and again to Docker daemon).
+
+    cd ./installation-files
+    # run each wget one by one, input login and password
+    ./unzip-all.sh
+
+
+ - Run nginx for serving these resources (this step save you A LOT of time when you rebuild over and over the main Dockerfile - large files are not transferred again and again to Docker daemon).
 
 
     docker-compose -f docker-compose.build.yml up -d
@@ -39,7 +45,8 @@ For the easiest possible build, there are also prepared WGET download scripts in
 
     docker-compose build
 
-
+- You can tag the result image and use it
+- There is also a docker-compose with the Oracle DB configured for testing (DB is required for RCU (Repository Creation Utility) and the RCU will drop and than create the repository on the first run).
 
 
 

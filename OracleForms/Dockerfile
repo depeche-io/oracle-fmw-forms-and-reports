@@ -1,7 +1,7 @@
 ###### SERVER JDK
 FROM oraclelinux:8 as serverjdk
 # HOST OS NGINX local repo trick
-ARG REMOTE_REPO=http://172.17.0.1:8008 
+ARG REMOTE_REPO=http://172.17.0.1:8008
 
 ENV JAVA_PKG=jdk-8u321-linux-x64.tar.gz \
     JAVA_HOME=/usr/java/default
@@ -10,11 +10,11 @@ USER root
 # libnsl = OHS dependency
 RUN yum install -y vim mc tar bzip2 hostname wget libnsl binutils gcc gcc-c++ glibc.x86_64 glibc.i686 glibc-devel.x86_64 libaio.x86_64 libaio-devel.x86_64 libgcc.x86_64 libgcc.i686 libstdc++.x86_64 libstdc++.i686 libstdc++-devel.x86_64 ksh make sysstat numactl numactl-devel motif motif-devel
 
-ADD $REMOTE_REPO/$JAVA_PKG /usr/java/
+RUN mkdir /usr/java && cd /usr/java \
+    && wget --no-verbose --progress=bar "$REMOTE_REPO/$JAVA_PKG"  \
+    && tar -xf /usr/java/$JAVA_PKG && rm -f /usr/java/*.tar.gz
 
-RUN tar -xf /usr/java/$JAVA_PKG && rm /usr/java/$JAVA_PKG
-
-RUN export JAVA_DIR=$(ls -1 -d /usr/java/*) && \
+RUN export JAVA_DIR=/usr/java/jdk1.8.0_321 && \
     ln -s $JAVA_DIR /usr/java/latest && \
     ln -s $JAVA_DIR /usr/java/default && \
     alternatives --install /usr/bin/java java $JAVA_DIR/bin/java 20000 && \
@@ -23,7 +23,8 @@ RUN export JAVA_DIR=$(ls -1 -d /usr/java/*) && \
 
 ###### FMW INFRA
 FROM serverjdk AS fmw-infra
-ARG REMOTE_REPO=http://docker.host.internal:8008
+# HOST OS NGINX local repo trick
+ARG REMOTE_REPO=http://172.17.0.1:8008
 
 # Common environment variables required for this build
 # ----------------------------------------------------
@@ -51,7 +52,7 @@ COPY install.file oraInst.loc /u01/
 
 RUN mkdir -p /opt/ora-reports-install \
    && cd /u01 \
-   && wget --no-verbose --progress=bar $REMOTE_REPO/$FMW_JAR  \
+   && wget --no-verbose --progress=bar "$REMOTE_REPO/$FMW_JAR" \
    && chmod +x $FMW_JAR \
    && $JAVA_HOME/bin/java -jar /u01/$FMW_JAR -silent -responseFile /u01/install.file -invPtrLoc /u01/oraInst.loc -jreLoc $JAVA_HOME -ignoreSysPrereqs -force -novalidation ORACLE_HOME=$ORACLE_HOME INSTALL_TYPE="WebLogic Server" \
    && rm /u01/$FMW_JAR /u01/install.file \
@@ -65,13 +66,14 @@ ENV FMW_BIN=fmw_12.2.1.4.0_fr_linux64.bin \
 
 ###### FORMS AND REPORTS
 FROM fmw-infra AS formsreports
-ARG REMOTE_REPO=http://docker.host.internal:8008
+# HOST OS NGINX local repo trick
+ARG REMOTE_REPO=http://172.17.0.1:8008
 
 COPY formsreports.response oraInst.loc /opt/ora-reports-install/
 
 RUN cd /opt/ora-reports-install \
-   && wget --no-verbose --progress=bar $REMOTE_REPO/$FMW_BIN \
-   && wget --no-verbose --progress=bar $REMOTE_REPO/$FMW_BIN2 \
+   && wget --no-verbose --progress=bar "$REMOTE_REPO/$FMW_BIN" \
+   && wget --no-verbose --progress=bar "$REMOTE_REPO/$FMW_BIN2" \
    && chmod +x $FMW_BIN \
    && ./$FMW_BIN -silent -responseFile /opt/ora-reports-install/formsreports.response  -invPtrLoc /opt/ora-reports-install/oraInst.loc -jreLoc $JAVA_HOME -ignoreSysPrereqs -force -novalidation \
    && rm -f /opt/ora-reports-install/*
