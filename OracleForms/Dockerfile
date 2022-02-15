@@ -5,7 +5,9 @@ ARG REMOTE_REPO=http://docker.host.internal:8008
 ENV JAVA_PKG=jdk-8u321-linux-x64.tar.gz \
     JAVA_HOME=/usr/java/default
 
-ADD $JAVA_PKG /usr/java/
+ADD $REMOTE_REPO/$JAVA_PKG /usr/java/
+
+RUN tar -xfz /usr/java/$JAVA_PKG && rm /usr/java/$JAVA_PKG
 
 RUN export JAVA_DIR=$(ls -1 -d /usr/java/*) && \
     ln -s $JAVA_DIR /usr/java/latest && \

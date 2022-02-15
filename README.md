@@ -31,8 +31,7 @@ For the easiest possible build, there are also prepared WGET download scripts in
 - Run nginx for serving these resources (this step save you A LOT of time when you rebuild over and over the main Dockerfile - large files are not transferred again and again to Docker daemon).
 
 
-    docker-compose up --no-start
-    docker-compose start nginx 
+    docker-compose -f docker-compose.build.yml up -d
 
 
 -
