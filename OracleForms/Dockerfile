@@ -83,4 +83,12 @@ COPY --chown=oracle:root container-scripts/* /opt/container-scripts/
 VOLUME $VOLUME_DIR
 WORKDIR $ORACLE_HOME
 
+# weblogic (/em and /console)
+EXPOSE 7001
+
+# FORMS
+EXPOSE 9001
+# REPORTS
+EXPOSE 9002
+
 ENTRYPOINT ["source /opt/container-scripts/setenv.sh && /opt/container-scripts/crDomain.sh"]

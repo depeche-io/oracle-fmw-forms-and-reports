@@ -39,6 +39,12 @@ There is a docker-compose that allows you to build the image with all required d
 
     docker-compose -f docker-compose.build.yml up -d
 
+ 
+- Configuration can be done in following file. Of course, part of this file you can later and mount this file into container.
+
+
+    ./OracleForms/container-scripts/setenv.sh
+
 
 - Build the Forms and Reports image
 
@@ -59,6 +65,7 @@ There is a docker-compose that allows you to build the image with all required d
       docker-compose start oradb
       # wait like 15 mins to fully initialize, check status via
       docker-compose logs -f
+      # wait for this message in the db log: DATABASE IS READY TO USE!
 
       # if the DB is online, start the Forms and Reports
       # note - image is constructed to do the necessary setup on the first run and exist afterwars

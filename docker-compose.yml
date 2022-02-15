@@ -18,12 +18,12 @@ services:
     build:
       context: OracleForms
       target: formsreports
-    entrypoint: sleep 9999999 # use this for own experiments, otherwise comment this
+    #entrypoint: sleep 9999999 # use this for own experiments, otherwise comment this
     volumes:
-      - ./container-scripts/:/opt/container-scripts/
+      - ./OracleForms/container-scripts/:/opt/container-scripts/
       #- ./user_projects/:/u01/oracle/user_projects # uncomment to persist generated domain config
     ports:
       - 7001:7001 # Weblogic (https for /console and /em)
-      - 9011:9011 # FORMS
-      - 9012:9012 # REPORTS
+      - 9011:9001 # FORMS
+      - 9012:9002 # REPORTS
 
