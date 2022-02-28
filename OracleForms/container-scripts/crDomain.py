@@ -16,10 +16,15 @@ v_fads=os.environ['FADS12C']
 v_setup_domain_base=os.environ['DOMAIN_BASE']
 v_setup_application_base=os.environ['APPLICATION_BASE']
 v_OracleHome=os.environ['INT_ORACLE_HOME']
-v_dbhost=os.environ['DB_HOST']
-v_dbport=os.environ['DB_PORT']
-v_dbservice=os.environ['DB_SERVICE']
-v_rcudbstr=v_dbhost+":"+v_dbport+":"+v_dbservice
+
+if 'DB_CONNECT_STRING' in os.environ:
+   v_rcudbstr= os.environ['DB_CONNECT_STRING']
+else:
+   v_dbhost=os.environ['DB_HOST']
+   v_dbport=os.environ['DB_PORT']
+   v_dbservice=os.environ['DB_SERVICE']
+   v_rcudbstr=v_dbhost+":"+v_dbport+":"+v_dbservice
+
 v_SchemaPrefix=os.environ['SCHEMA_PREFIX']
 v_pwdfile=os.environ['PWDFILE']
 v_dbUser=os.environ['DBUSER']
