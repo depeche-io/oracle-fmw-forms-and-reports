@@ -114,19 +114,22 @@ if ! test -d "${DOMAIN_BASE}/${DOMAIN_NAME}"; then
       finish_time=$(date +%s)
       echo "Finished"
       echo "Domain Build Time: $(( $((finish_time - start_time))/60))  minutes."
-   else
-      # Docker Hack, if Domain is already created (first run), we will be here
-      # and can startup the Forms & Reports Domain
-      # In case we are facing problems with /dev/random
-      export CONFIG_JVM_ARGS=-Djava.security.egd=file:/dev/./urandom:$CONFIG_JVM_ARGS
-      # Avoiding MDS-11019 error messages
-      export JAVA_OPTIONS="${JAVA_OPTIONS} -Dfile.encoding=UTF8"
-      # Startup the Node Manager and AdminServer
-      echo "Domain is already installed and will be started..."
-      nohup ${DOMAIN_BASE}/${DOMAIN_NAME}/bin/startNodeManager.sh > /dev/null 2>&1 &
-      echo "Wait 30 seconds for Node Manager to start ..."
-      sleep 30
-      ${DOMAIN_BASE}/${DOMAIN_NAME}/startWebLogic.sh
-   fi
+else
+
+  echo "Domain is already installed and will be started..."
+
+  # Docker Hack, if Domain is already created (first run), we will be here
+  # and can startup the Forms & Reports Domain
+  # In case we are facing problems with /dev/random
+  export CONFIG_JVM_ARGS=-Djava.security.egd=file:/dev/./urandom:$CONFIG_JVM_ARGS
+  # Avoiding MDS-11019 error messages
+  export JAVA_OPTIONS="${JAVA_OPTIONS} -Dfile.encoding=UTF8"
+  # Startup the Node Manager and AdminServer
+  
+  ${DOMAIN_BASE}/InfraDomain/bin/startManagedWebLogic.sh $FORMS_MS_NAME http://$AS_HOST:$ADMINPORT > >(sed 's/^/FORMS: /') 2> >(sed 's/^/FORMS-ERR: /' >&2) &
+  ${DOMAIN_BASE}/InfraDomain/bin/startManagedWebLogic.sh $REPORTS_MS_NAME http://$AS_HOST:$ADMINPORT > >(sed 's/^/REPORTS: /') 2> >(sed 's/^/REPORTS-ERR: /' >&2) &
+
+  wait
+fi
 
 

@@ -82,17 +82,22 @@ There is a docker-compose that allows you to build the image with all required d
       docker-compose start formsreports
 
       # weblogic is fully started with this message in the logs: <Server state changed to RUNNING.>
+      # all logs are directed to containers STDOUD and STDERR together, each is prefixed with FORMS: or REPORTS:
+      # currently, there are 3 services, following 2 starts automatically (forms and reports)
+      # check working FORMS here:
+      http://localhost:9011/forms/frmservlet (blank screen with title and without 404 error means OK, port is remapped from default 9001 in docker-compose.yml)
+      http://localhost:9012/reports/rwservlet (port remapped in docker-compose.yml from default 9002)
 
-      # currently, there are 3 services, only 1 starts automatically (weblogic admin console and enterprise manager):
+      # weblogic admin console and enterprise manager - these require manual startup:
+      docker exec -it CONTAINER_ID bash
+      source /opt/containers-scripts/setenv.sh
+      /opt/containers-scripts/start-admin.sh
+
       http://localhost:7001/em  
       # or
       http://localhost:7001/console
       # use can use these (default: weblogic/welcome1) to start MS_FORMS and MS_REPORTS
       # or you can use standard start scripts
-
-      # check working FORMS here:
-      http://localhost:9011/forms/frmservlet (blank screen with title and without 404 error means OK, port is remapped from default 9001 in docker-compose.yml)
-      http://localhost:9012/reports/rwservlet (port remapped in docker-compose.yml from default 9002)
 
 
 ### Reseting the domain

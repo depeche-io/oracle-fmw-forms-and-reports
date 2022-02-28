@@ -22,6 +22,12 @@ services:
     volumes:
       - ./OracleForms/container-scripts/:/opt/container-scripts/
       #- ./user_projects/:/u01/oracle/user_projects # uncomment to persist generated domain config
+    environment:
+      - DB_HOST=oradb
+      - DB_SERVICE=orclpdb1
+      - DBUSER=sys
+      - DBPWD=Example123_
+      - COMPONENTPWD=Example123_
     ports:
       - 7001:7001 # Weblogic (https for /console and /em)
       - 9011:9001 # FORMS
