@@ -33,6 +33,11 @@ v_dbRole=os.environ['DBROLE']
 v_dbOmf=os.environ['DB_OMF']
 v_componentPassword=os.environ['COMPONENTPWD']
 
+v_skipRcuDrop   = 'SKIP_RCU_DROP'   in os.environ and os.environ['SKIP_RCU_DROP'] == 'true'
+v_skipRcuCreate = 'SKIP_RCU_CREATE' in os.environ and os.environ['SKIP_RCU_CREATE'] == 'true'
+v_skipRcuScript = 'SKIP_RCU_SCRIPT' in os.environ and os.environ['SKIP_RCU_SCRIPT'] == 'true'
+
+
 def printHeader(headerText):
     print "\n======================================================================================"
     print "--> "+headerText
@@ -56,13 +61,27 @@ os.system("echo " +v_componentPassword+ ">>"+v_pwdfile)
 os.system("echo " +v_componentPassword+ ">>"+v_pwdfile)
 
 printHeader("Step: create repository - started")
-printInfo("Drop repository "+v_SchemaPrefix)
-os.system(v_OracleHome + "/oracle_common/bin/rcu -silent -dropRepository -databaseType ORACLE -connectString "+ v_rcudbstr +" -dbUser "+v_dbUser+" -dbRole "+v_dbRole+" -schemaPrefix "+v_SchemaPrefix+" -component STB -component IAU -component IAU_APPEND -component IAU_VIEWER -component OPSS -component MDS -component UCSUMS -f <"+v_pwdfile)
-printInfo("Repository "+v_SchemaPrefix+" dropped")
+if not v_skipRcuDrop:
+   printInfo("Drop repository "+v_SchemaPrefix)
+   os.system(v_OracleHome + "/oracle_common/bin/rcu -silent -dropRepository -databaseType ORACLE -connectString '" + v_rcudbstr +"' -dbUser "+v_dbUser+" -dbRole "+v_dbRole+" -schemaPrefix "+v_SchemaPrefix+" -component STB -component IAU -component IAU_APPEND -component IAU_VIEWER -component OPSS -component MDS -component UCSUMS -f <"+v_pwdfile)
+   printInfo("Repository "+v_SchemaPrefix+" dropped")
+else:
+   printInfo("SKIPPING Drop repository "+v_SchemaPrefix)
 
-printInfo("Create repository "+v_SchemaPrefix+" - started")
-os.system(v_OracleHome + "/oracle_common/bin/rcu -silent -createRepository -honorOMF "+ v_dbOmf +" -connectString "+ v_rcudbstr +" -dbUser "+v_dbUser+" -dbRole "+v_dbRole+" -useSamePasswordForAllSchemaUsers true -schemaPrefix "+v_SchemaPrefix+" -component STB -component IAU -component IAU_APPEND -component IAU_VIEWER -component OPSS -component MDS -component UCSUMS -f < "+v_pwdfile)
-printInfo("Repository "+v_SchemaPrefix+" created")
+if not v_skipRcuScript:
+    printInfo("Script dump repository "+v_SchemaPrefix+" - TARGET: /tmp/rcu-script/")
+    os.system("mkdir -p /tmp/rcu-script/")
+    os.system(v_OracleHome + "/oracle_common/bin/rcu -silent -generateScript -scriptLocation /tmp/rcu-script -honorOMF "+ v_dbOmf +" -connectString '" + v_rcudbstr +"' -dbUser "+v_dbUser+" -dbRole "+v_dbRole+" -useSamePasswordForAllSchemaUsers true -schemaPrefix "+v_SchemaPrefix+" -component STB -component IAU -component IAU_APPEND -component IAU_VIEWER -component OPSS -component MDS -component UCSUMS -f < "+v_pwdfile)
+    printInfo("Repository "+v_SchemaPrefix+" created")
+else:
+    printInfo("SKIPPING Script dump repository "+v_SchemaPrefix)
+
+if not v_skipRcuCreate:
+    printInfo("Create repository "+v_SchemaPrefix+" - started")
+    os.system(v_OracleHome + "/oracle_common/bin/rcu -silent -createRepository -honorOMF "+ v_dbOmf +" -connectString '" + v_rcudbstr +"' -dbUser "+v_dbUser+" -dbRole "+v_dbRole+" -useSamePasswordForAllSchemaUsers true -schemaPrefix "+v_SchemaPrefix+" -component STB -component IAU -component IAU_APPEND -component IAU_VIEWER -component OPSS -component MDS -component UCSUMS -f < "+v_pwdfile)
+    printInfo("Repository "+v_SchemaPrefix+" created")
+else:
+    printInfo("SKIPPING Create repository "+v_SchemaPrefix)
 
 printHeader("Step: Read default template (always wls.jar!!)")
 readTemplate(v_template)

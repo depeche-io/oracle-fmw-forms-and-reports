@@ -78,6 +78,7 @@ RUN cd /opt/ora-reports-install \
    && ./$FMW_BIN -silent -responseFile /opt/ora-reports-install/formsreports.response  -invPtrLoc /opt/ora-reports-install/oraInst.loc -jreLoc $JAVA_HOME -ignoreSysPrereqs -force -novalidation \
    && rm -f /opt/ora-reports-install/*
 
+COPY --chown=oracle:root default-rcu-creation-scripts/* /opt/default-rcu-creation-scripts/
 COPY --chown=oracle:root container-scripts/* /opt/container-scripts/
 
 VOLUME $VOLUME_DIR

@@ -17,10 +17,15 @@ v_NMPort=os.environ['NM_PORT']
 v_NMUsername=os.environ['NM_USERNAME']
 v_NMPwd=os.environ['NM_PWD']
 v_domain=os.environ['DOMAIN_NAME']
-v_dbhost=os.environ['DB_HOST']
-v_dbport=os.environ['DB_PORT']
-v_dbservice=os.environ['DB_SERVICE']
-v_url="jdbc:oracle:thin:@//"+v_dbhost+':'+v_dbport+'/'+v_dbservice
+
+if 'DB_CONNECT_STRING' in os.environ:
+   v_url="jdbc:oracle:thin:@" + os.environ['DB_CONNECT_STRING']
+else:
+   v_dbhost=os.environ['DB_HOST']
+   v_dbport=os.environ['DB_PORT']
+   v_dbservice=os.environ['DB_SERVICE']
+   v_url="jdbc:oracle:thin:@//"+v_dbhost+':'+v_dbport+'/'+v_dbservice
+
 v_pwd=os.environ['COMPONENTPWD']
 v_SchemaPrefix=os.environ['SCHEMA_PREFIX']
 v_setup_domain_base=os.environ['DOMAIN_BASE']
