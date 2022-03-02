@@ -28,6 +28,10 @@ services:
       - DBUSER=sys
       - DBPWD=Example123_
       - COMPONENTPWD=Example123_
+
+      - SKIP_CRU_DROP=false # drop RCU REPO on first run
+      - SKIP_CRU_SCRIPT=false # first run - this generated to /tmp/rcu-script SQL to be used if rcu utility can not be executed directly (e.g. Autonomous DB on OCI)
+      - SKIP_CRU_CREATE=false # create RCU REPO on first run
     ports:
       - 7001:7001 # Weblogic (https for /console and /em)
       - 9011:9001 # FORMS
