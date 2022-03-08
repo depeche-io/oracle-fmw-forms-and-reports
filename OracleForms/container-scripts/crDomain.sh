@@ -129,6 +129,9 @@ else
   ${DOMAIN_BASE}/InfraDomain/bin/startManagedWebLogic.sh $FORMS_MS_NAME http://$AS_HOST:$ADMINPORT > >(sed 's/^/FORMS: /') 2> >(sed 's/^/FORMS-ERR: /' >&2) &
   ${DOMAIN_BASE}/InfraDomain/bin/startManagedWebLogic.sh $REPORTS_MS_NAME http://$AS_HOST:$ADMINPORT > >(sed 's/^/REPORTS: /') 2> >(sed 's/^/REPORTS-ERR: /' >&2) &
 
+  # extension hook
+  ${SCRIPT_HOME}/afterStartHook.sh
+
   wait
 fi
 

@@ -20,7 +20,7 @@ services:
       target: formsreports
     #entrypoint: sleep 9999999 # use this for own experiments, otherwise comment this
     volumes:
-      - ./OracleForms/container-scripts/:/opt/container-scripts/
+      #- ./OracleForms/container-scripts/:/opt/container-scripts/ # to live debug
       #- ./user_projects/:/u01/oracle/user_projects # uncomment to persist generated domain config
     environment:
       - DB_HOST=oradb
