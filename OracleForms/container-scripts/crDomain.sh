@@ -114,6 +114,9 @@ if ! test -d "${DOMAIN_BASE}/${DOMAIN_NAME}"; then
       finish_time=$(date +%s)
       echo "Finished"
       echo "Domain Build Time: $(( $((finish_time - start_time))/60))  minutes."
+
+  # extension hook
+  ${SCRIPT_HOME}/afterInstallHook.sh
 else
 
   echo "Domain is already installed and will be started..."

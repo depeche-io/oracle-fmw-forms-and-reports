@@ -47,9 +47,10 @@ There is a docker-compose that allows you to build the image with all required d
 
 
 
-- To launch more commands after startup override this script in you own image or mount this script into container. This is executed after regular start (after init is done and restart is processed later on).
+- To launch more commands after startup override this script in you own image or mount this script into container. This is executed after installation and regular start (after init is done and restart is processed later on).
 
 
+    /opt/container-scripts/afterInstallHook.sh
     /opt/container-scripts/afterStartHook.sh
 
 
