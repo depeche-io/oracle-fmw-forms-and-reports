@@ -94,6 +94,7 @@ There is a docker-compose that allows you to build the image with all required d
       # currently, there are 3 services, following 2 starts automatically (forms and reports)
       # check working FORMS here:
       http://localhost:9011/forms/frmservlet (blank screen with title and without 404 error means OK, port is remapped from default 9001 in docker-compose.yml)
+      http://localhost:9011/forms/html/fsal.htm
       http://localhost:9012/reports/rwservlet (port remapped in docker-compose.yml from default 9002)
 
       # weblogic admin console and enterprise manager - these require manual startup:
