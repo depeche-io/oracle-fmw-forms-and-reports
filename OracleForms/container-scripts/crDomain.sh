@@ -110,10 +110,18 @@ if ! test -d "${DOMAIN_BASE}/${DOMAIN_NAME}"; then
       echo "Oracle Reports Server ${REP_SERVER_NAME} is created"
    fi
 
-      # Set End Time
-      finish_time=$(date +%s)
-      echo "Finished"
-      echo "Domain Build Time: $(( $((finish_time - start_time))/60))  minutes."
+   if [ "${FORMS12C}" == "true" ]; then
+      echo "==========================================="
+      echo "Starting Forms for the first time, wait 1 minute"
+      echo "==========================================="
+      nohup ${DOMAIN_BASE}/InfraDomain/bin/startManagedWebLogic.sh $FORMS_MS_NAME http://$AS_HOST:$ADMINPORT > >(sed 's/^/FORMS: /') 2> >(sed 's/^/FORMS-ERR: /' >&2) &
+      sleep 60
+   fi
+
+  # Set End Time
+  finish_time=$(date +%s)
+  echo "Finished"
+  echo "Domain Build Time: $(( $((finish_time - start_time))/60))  minutes."
 
   # extension hook
   ${SCRIPT_HOME}/afterInstallHook.sh
